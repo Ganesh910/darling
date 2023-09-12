@@ -15,7 +15,7 @@ def chat():
         return "Sent"
 
     else:
-        return "Not recieved"
+        return "Not received"
 
 # This route is used when someone wants to connect to you
 @app.route("/connect", methods=['GET', 'POST'])
