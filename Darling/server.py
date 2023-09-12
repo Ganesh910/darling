@@ -2,6 +2,10 @@ from flask import Flask, request
 
 app = Flask("Darling")
 
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
 # This route is used to send messages by the client
 @app.route("/", methods=['GET', 'POST'])
 def chat():
