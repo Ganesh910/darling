@@ -7,8 +7,8 @@ def start_server():
     server.app.run(debug=False)
 
 def start_client():
-    name = input(">>> Enter Your Name Darling: ")
-    url = input(">>> Enter the secret URL Darling :")
+    name = input("=> Enter Your Name Darling:\n")
+    url = input("=> Enter the secret URL Darling:\n")
     if client.connect(name, url):
         client.chat(name, url)
 

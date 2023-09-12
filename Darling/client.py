@@ -1,15 +1,15 @@
 import requests
-import validators as vd
+import validators
 
 # Establish connection with the server
 def connect(name, url):
 
-    if not vd.url(url):
-        print("invalid url")
+    if not validators.url(url):
         return False
 
-    x = requests.post(url, json={'name':name, 'msg':"I want to connect Darling"})
+    x = requests.post(url+'/connect', json={'name':name, 'msg':"I want to connect Darling"})
     if x.status_code == 200:
+        print(f"Connection Established with {name} succesfully")
         return True
     else:
         return False
@@ -17,12 +17,12 @@ def connect(name, url):
 # Is used to send messages to server
 def chat(name, url):
     while True:
-        msg = input(">>> Type your message Darling: ")
-        myobj = {'msg':msg}
+        msg = input("=> Darling, ")
+        myobj = {'name':name, 'msg':msg}
 
-        x = requests.post(url, json=myobj)
-
-        print(x.text)
+        x = requests.post(url+'/', json=myobj)
+        if x.status_code==200:
+            print("Sent")
 
 if __name__=="__main__":
     chat()

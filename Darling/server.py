@@ -4,17 +4,17 @@ app = Flask("Darling")
 
 # This route is used to send messages by the client
 @app.route("/", methods=['GET', 'POST'])
-def recieve():
+def chat():
     if request.method == 'POST':
         json_msg = request.get_json()
-        print(f"Message : {json_msg['msg']}")
-        return "Recieved"
+        print(f"{json_msg['name']} : {json_msg['msg']}")
+        return "Sent"
 
     else:
         return "Not recieved"
 
 # This route is used when someone wants to connect to you
-@app.route("/connect", methods=['GET, POST'])
+@app.route("/connect", methods=['GET', 'POST'])
 def connect():
     if request.method == 'POST':
         json_msg = request.get_json()
