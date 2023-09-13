@@ -6,10 +6,22 @@ app = Flask("Darling")
 
 convo = []
 
+user_id_number = 0
 
-@app.route("/verify", methods=['POST'])
+users = {}
+
+
+@app.route("/verify/", methods=['POST'])
 def verify():
-    ...
+    if request.method == 'POST':
+        user_id = 'user' + str(user_id_number)
+        q = deque()
+        users[user_id] = q
+        return user_id
+
+    else:
+        print("Not a post request")
+        return "Not Success"
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -25,6 +37,7 @@ def chat():
 
         # append the json to the keep the history
         convo.append(json_msg)
+        users[json_msg['user_id']].append(json_msg)
 
         print(f"{json_msg['name']} says : {json_msg['msg']}")
 
