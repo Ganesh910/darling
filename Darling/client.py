@@ -33,29 +33,29 @@ def prompt():
     else:
         print("Please enter one the command only. (case sensitive)")
 
-    return (name, url)
+    return {'name': name, 'url': url}
 
 
 # Verifies the users. Authentication
 def verify(name, url):
-
     # Create profile
     myobj = {'name': name}
     response = requests.post(url+'/verify/', json=myobj)
 
     if response.status_code == 200:
+        user_id = response.text
         print("Darling, Your profile is ready")
     else:
         print("Sorry Darling! Unable to create your Profile")
         exit()
+    return user_id
+
 
 # Send messages
-
-
-def send(name, url):
+def send(name, url, user_id):
     while True:
         msg = input("=> Darling, ")
-        myobj = {'name': name, 'msg': msg}
+        myobj = {'name': name, 'msg': msg, 'user_id': user_id}
 
         response = requests.post(url+'/', json=myobj)
         if response.status_code == 200:
@@ -68,9 +68,10 @@ def get():
 
 
 data = prompt()
-# verify(*data)
+user_id = verify(**data)
+data['user_id'] = user_id
 getThread = threading.Thread(target=get)
-sendThread = threading.Thread(target=send, args=[*data])
+sendThread = threading.Thread(target=send, args=[*data.values()])
 
 getThread.start()
 sendThread.start()
