@@ -1,6 +1,8 @@
 import requests
 import validators
 import threading
+import time
+import json
 
 # Prompt for the mode of chatting
 
@@ -55,7 +57,7 @@ def verify(name, url):
 def send(name, url, user_id):
     while True:
         msg = input("=> Darling, ")
-        myobj = {'name': name, 'msg': msg, 'user_id': user_id}
+        myobj = {'name': name, 'msg': msg, 'user_id': user_id, 'purpose':'post'}
 
         response = requests.post(url+'/', json=myobj)
         if response.status_code == 200:
@@ -63,14 +65,21 @@ def send(name, url, user_id):
 
 
 # Receive Messages
-def get():
-    ...
+def get(url, user_id):
+    while True:
+        time.sleep(10)
+        response = requests.post(url+'/', json={'user_id':user_id, 'purpose':'get'})
+        new_msgs = json.loads(response.text)
+
+        for new_msg in new_msgs:
+            print(f"{new_msg['time']} > {new_msg['name']} says : {new_msg['msg']}")
+        
 
 
 data = prompt()
 user_id = verify(**data)
 data['user_id'] = user_id
-getThread = threading.Thread(target=get)
+getThread = threading.Thread(target=get, args=[data['url'], user_id])
 sendThread = threading.Thread(target=send, args=[*data.values()])
 
 getThread.start()
