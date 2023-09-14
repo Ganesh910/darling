@@ -6,8 +6,6 @@ app = Flask("Darling")
 
 convo = []
 
-user_id_number = 0
-
 users = {}
 
 
@@ -15,7 +13,6 @@ users = {}
 def verify():
     if request.method == 'POST':
         user_id = 'user' + str(time.time())
-        # user_id_number+=1
         q = deque()
         users[user_id] = q
         return user_id
@@ -27,7 +24,7 @@ def verify():
 
 @app.route("/", methods=['GET', 'POST'])
 def chat():
-    print("HERE IS USERS:", users)
+
     if request.method == 'POST':
 
         # Time of messaged sent by client
@@ -70,4 +67,4 @@ def chat():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
