@@ -5,8 +5,6 @@ import time
 import json
 
 # Prompt for the mode of chatting
-
-
 def prompt():
     name = input("Enter you name Darling :\n")
     url = ""
@@ -57,7 +55,8 @@ def verify(name, url):
 def send(name, url, user_id):
     while True:
         msg = input("=> Darling, ")
-        myobj = {'name': name, 'msg': msg, 'user_id': user_id, 'purpose':'post'}
+        myobj = {'name': name, 'msg': msg,
+                 'user_id': user_id, 'purpose': 'post'}
 
         response = requests.post(url+'/', json=myobj)
         if response.status_code == 200:
@@ -67,13 +66,14 @@ def send(name, url, user_id):
 # Receive Messages
 def get(url, user_id):
     while True:
-        time.sleep(10)
-        response = requests.post(url+'/', json={'user_id':user_id, 'purpose':'get'})
+        time.sleep(1)
+        response = requests.post(
+            url+'/', json={'user_id': user_id, 'purpose': 'get'})
         new_msgs = json.loads(response.text)
 
         for new_msg in new_msgs:
-            print(f"{new_msg['time']} > {new_msg['name']} says : {new_msg['msg']}")
-        
+            print(
+                f"{new_msg['time']} > {new_msg['name']} says : {new_msg['msg']}")
 
 
 data = prompt()
