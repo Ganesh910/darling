@@ -76,14 +76,15 @@ def get(url, user_id):
                 f"{new_msg['time']} > {new_msg['name']} says : {new_msg['msg']}")
 
 
-data = prompt()
-user_id = verify(**data)
-data['user_id'] = user_id
-getThread = threading.Thread(target=get, args=[data['url'], user_id])
-sendThread = threading.Thread(target=send, args=[*data.values()])
+if __name__ == '__main__':
+    data = prompt()
+    user_id = verify(**data)
+    data['user_id'] = user_id
+    getThread = threading.Thread(target=get, args=[data['url'], user_id])
+    sendThread = threading.Thread(target=send, args=[*data.values()])
 
-getThread.start()
-sendThread.start()
+    getThread.start()
+    sendThread.start()
 
-getThread.join()
-sendThread.join()
+    getThread.join()
+    sendThread.join()

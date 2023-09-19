@@ -61,7 +61,7 @@ def chat():
 
         
         else:
-            print("Purpose Not Defined! ")
+            return "undefined purpose"
 
     return "Method Not supportes Darling :("
 
