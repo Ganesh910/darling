@@ -7,8 +7,8 @@ app = Flask("Darling")
 convo = []
 
 users = {}
-
-
+#here i am adding some comments 
+#verify function to verify the request made is POST or not
 @app.route("/verify/", methods=['POST'])
 def verify():
     if request.method == 'POST':
@@ -21,7 +21,7 @@ def verify():
         print("Not a post request")
         return "Not Success"
 
-
+#chat function to actually send messages to user by checking GET or POST route
 @app.route("/", methods=['GET', 'POST'])
 def chat():
 
