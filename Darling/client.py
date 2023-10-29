@@ -3,7 +3,6 @@ import validators
 import threading
 import time
 import json
-from .server import start_server
 
 # Prompt for the mode of chatting
 def prompt():
@@ -57,7 +56,7 @@ def send(name, url, user_id):
     while True:
         msg = input("=> Darling, ")
         myobj = {'name': name, 'msg': msg,
-                 'user_id': user_id, 'purpose': 'post'}
+                 'user_id': user_id}
 
         response = requests.post(url+'/', json=myobj)
         if response.status_code == 200:
@@ -68,8 +67,8 @@ def send(name, url, user_id):
 def get(url, user_id):
     while True:
         time.sleep(1)
-        response = requests.post(
-            url+'/', json={'user_id': user_id, 'purpose': 'get'})
+        response = requests.get(
+            url+'/', json={'user_id': user_id})
         new_msgs = json.loads(response.text)
 
         for new_msg in new_msgs:
