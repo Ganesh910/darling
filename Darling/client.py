@@ -3,6 +3,7 @@ import validators
 import threading
 import time
 import json
+from .server import start_server
 
 # Prompt for the mode of chatting
 def prompt():
@@ -12,14 +13,14 @@ def prompt():
     role = input(
         "Mode:\n\tType 'server' to create your own server\n\tType 'url' to enter the url\n\tType 'exit' to exit the terminal\n")
     if role == 'server':
-        url = 'http://127.0.0.1:5000/'
+        url = 'http://127.0.0.1:6969/'
         print("Server Successfully created!")
 
     elif role == 'url':
 
         # ask for the url until it's valid
         while True:
-            url = input("Enter the Url Darlo!")
+            url = input("Invalid URL! Retry Beauty!\n")
 
             if validators.url(url):
                 break
@@ -31,7 +32,7 @@ def prompt():
         exit()
 
     else:
-        print("Please enter one the command only. (case sensitive)")
+        print("Please enter one of the command only. (case sensitive)")
 
     return {'name': name, 'url': url}
 

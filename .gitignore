@@ -3,3 +3,4 @@ starter.py
 tests/
 venv/
 .vscode/
+**/__pycache__/
