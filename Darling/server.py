@@ -1,6 +1,11 @@
 from flask import Flask, request, jsonify
 import time
 from collections import deque
+import argparse
+
+parser = argparse.ArgumentParser(description="Darling Chat Server")
+parser.add_argument("-p", "--port", type=int, default=5000, help="Port Number")
+args = parser.parse_args()
 
 app = Flask("Darling")
 
@@ -63,8 +68,11 @@ def chat():
         else:
             return "undefined purpose"
 
-    return "Method Not supportes Darling :("
+    return "Method Not supported Darling :("
+
+def start_server(port):
+    app.run(host='0.0.0.0', port=port, debug=False)
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(host='0.0.0.0', port=args.port, debug=False)
