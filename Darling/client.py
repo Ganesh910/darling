@@ -12,7 +12,7 @@ def prompt():
     role = input(
         "Mode:\n\tType 'server' to create your own server\n\tType 'url' to enter the url\n\tType 'exit' to exit the terminal\n")
     if role == 'server':
-        url = 'http://127.0.0.1:6969/'
+        url = 'http://127.0.0.1:5000/'
         print("Server Successfully created!")
 
     elif role == 'url':
@@ -56,7 +56,7 @@ def send(name, url, user_id):
     while True:
         msg = input("=> Darling, ")
         myobj = {'name': name, 'msg': msg,
-                 'user_id': user_id}
+                 'user_id': user_id, 'receiver_id': 'all'}
 
         response = requests.post(url+'/', json=myobj)
         if response.status_code == 200:
