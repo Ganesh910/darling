@@ -19,7 +19,7 @@ def prompt():
 
         # ask for the url until it's valid
         while True:
-            url = input("Enter the Url Darlo!")
+            url = input("Invalid URL! Retry Beauty!\n")
 
             if validators.url(url):
                 break
@@ -31,7 +31,7 @@ def prompt():
         exit()
 
     else:
-        print("Please enter one the command only. (case sensitive)")
+        print("Please enter one of the command only. (case sensitive)")
 
     return {'name': name, 'url': url}
 
@@ -56,7 +56,7 @@ def send(name, url, user_id):
     while True:
         msg = input("=> Darling, ")
         myobj = {'name': name, 'msg': msg,
-                 'user_id': user_id, 'purpose': 'post'}
+                 'user_id': user_id, 'receiver_id': 'all'}
 
         response = requests.post(url+'/', json=myobj)
         if response.status_code == 200:
@@ -67,8 +67,8 @@ def send(name, url, user_id):
 def get(url, user_id):
     while True:
         time.sleep(1)
-        response = requests.post(
-            url+'/', json={'user_id': user_id, 'purpose': 'get'})
+        response = requests.get(
+            url+'/', json={'user_id': user_id})
         new_msgs = json.loads(response.text)
 
         for new_msg in new_msgs:
