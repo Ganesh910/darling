@@ -1,4 +1,4 @@
-from .message import Message
+from models import Message
 from typing import List
 
 class Chat:

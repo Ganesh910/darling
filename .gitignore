@@ -1,6 +1,6 @@
 curseT.py
 starter.py
 tests/
-venv/
+.venv/
 .vscode/
 **/__pycache__/

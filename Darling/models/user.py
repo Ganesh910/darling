@@ -1,5 +1,5 @@
 from collections import deque
-from .message import Message
+from models import Message
 
 class User:
     def __init__(self, id, name, email=None, password=None):

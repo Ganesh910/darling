@@ -12,7 +12,7 @@ def prompt():
     role = input(
         "Mode:\n\tType 'server' to create your own server\n\tType 'url' to enter the url\n\tType 'exit' to exit the terminal\n")
     if role == 'server':
-        url = 'http://127.0.0.1:5000/'
+        url = 'http://127.0.0.1:6969/'
         print("Server Successfully created!")
 
     elif role == 'url':
@@ -54,7 +54,7 @@ def verify(name, url):
 # Send messages
 def send(name, url, user_id):
     while True:
-        msg = input("=> Darling, ")
+        msg = input("=> ")
         myobj = {'name': name, 'msg': msg,
                  'user_id': user_id, 'receiver_id': 'all'}
 
@@ -69,11 +69,16 @@ def get(url, user_id):
         time.sleep(1)
         response = requests.get(
             url+'/', json={'user_id': user_id})
-        new_msgs = json.loads(response.text)
+        
+        if response.status_code == 200:
+            new_msgs = json.loads(response.text)
 
-        for new_msg in new_msgs:
-            print(
-                f"{new_msg['time']} > {new_msg['name']} says : {new_msg['msg']}")
+            for new_msg in new_msgs:
+                print(
+                    f"{new_msg['time']} > {new_msg['sender_id']} says : {new_msg['content']}")
+            continue
+
+        print("Error in fetching messages")
 
 
 if __name__ == '__main__':

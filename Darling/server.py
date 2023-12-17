@@ -1,17 +1,11 @@
 from flask import Flask, request, jsonify
 import time
-from collections import deque
-from .models import Chat, Message, User
+from models import Message, User
 from typing import Dict
 import uuid
-# import argparse
-# parser = argparse.ArgumentParser(description="Darling Chat Server")
-# parser.add_argument("-p", "--port", type=int, default=5000, help="Port Number")
-# args = parser.parse_args()
 
 app = Flask("Darling")
 
-chat = Chat()
 users: Dict[str, User] = {}
 
 
@@ -45,8 +39,6 @@ def chat_server():
 
         message = Message(sender_id=sender_id, time=current_time, content=content, receiver_id=receiver_id)
 
-        chat.add(message)
-
         # append the message in every inbox
         for user_id in users:
             if user_id != sender_id:
@@ -60,14 +52,13 @@ def chat_server():
         new_msgs = []
         q = users[user_id].get_inbox()
         while q:
-            new_msgs.append(q.popleft())
+            msg = q.popleft()
+            new_msgs.append(msg.to_dict())
         return jsonify(new_msgs)
 
     return "Method Not supported Darling :("
 
-def start_server(port):
-    app.run(host='0.0.0.0', port=port, debug=False)
-
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
