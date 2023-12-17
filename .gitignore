@@ -1,6 +1,3 @@
-curseT.py
-starter.py
-tests/
 .venv/
 .vscode/
 **/__pycache__/
