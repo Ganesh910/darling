@@ -14,31 +14,49 @@ class TerminalUI:
         self.message_fetcher_thread = threading.Thread(target=self.fetch_messages)
         self.message_fetcher_thread.daemon = True  # Set the thread as daemon so it exits when the main program exits
         self.data = data
+        self.height, self.width = stdscr.getmaxyx()
+
+        # Define the chat display area
+        chat_display_height = self.height - 1  # Leave one line for the typing area
+        chat_display_width = self.width
+        self.chat_display = stdscr.derwin(chat_display_height, chat_display_width, 0, 0)
 
     def fetch_messages(self):
+        self.display_chat_history()
         while True:
-            time.sleep(1)
+            new_msg_flag = False
             response = requests.get(
                 self.data['url']+'/', json={'user_id': self.data['user_id']})
             
             if response.status_code == 200:
                 new_msgs = json.loads(response.text)
-                self.chat_history.extend(new_msgs)
-                continue
+                if len(new_msgs) > 0:
+                    new_msg_flag = True
+                    self.chat_history.extend(new_msgs)
 
-            print("Error in fetching messages")
+                if new_msg_flag:
+                    self.display_chat_history()
+                    new_msg_flag = False
+                
+            else:
+                print("Error in fetching messages")
+
+            time.sleep(1)
 
     def display_chat_history(self):
         # Display the chat history in the first part of the screen
-        self.stdscr.addstr(0, 0, "Chat History:")
+        self.chat_display.clear()
+        self.chat_display.addstr(0, 0, "Chat History:")
         for i, message in enumerate(self.chat_history):
-            self.stdscr.addstr(i + 1, 0, f'{message["time"]} > {message["sender_id"]} says : {message["content"]}')
+            self.chat_display.addstr(i + 1, 0, f'{message["time"]} > {message["sender_id"]} says : {message["content"]}')
+        self.chat_display.refresh()
 
     def get_input(self):
         # Get input from the user
         curses.echo()  # Enable echoing of characters
         self.stdscr.addstr(curses.LINES - 1, 0, "Type a message: ")
         self.input_message = self.stdscr.getstr(curses.LINES - 1, len("Type a message: "))
+        self.stdscr.clrtoeol()  # Clear to the end of line
 
         if self.input_message.strip() == b"":
             return
@@ -53,6 +71,7 @@ class TerminalUI:
         msg_to_add['sender_id'] = self.data['user_id']
         msg_to_add['content'] = self.input_message.decode("utf-8")
         self.chat_history.append(msg_to_add)
+        self.display_chat_history()
 
         myobj = {'name': self.data['user_id'], 'msg': self.input_message.decode("utf-8"),
                  'user_id': self.data['user_id'], 'receiver_id': 'all'}
@@ -65,8 +84,6 @@ class TerminalUI:
         self.message_fetcher_thread.start()  # Start the message fetching thread
 
         while True:
-            self.stdscr.clear()
-            self.display_chat_history()
             self.get_input()
     
 def prompt():
