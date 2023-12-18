@@ -93,19 +93,19 @@ def prompt():
     role = input(
         "Mode:\n\tType 'server' to create your own server\n\tType 'url' to enter the url\n\tType 'exit' to exit the terminal\n")
     if role == 'server':
-        url = 'http://127.0.0.1:6969/'
+        url = 'http://localhost:6969/'
         print("Server Successfully created!")
 
     elif role == 'url':
 
         # ask for the url until it's valid
         while True:
-            url = input("Invalid URL! Retry Beauty!\n")
+            url = input("Enter Url: \n=>")
 
             if validators.url(url):
-                break
-            else:
-                print("Darling! It's not valid url. Please Try Again.")
+                break            
+            
+            print("Darling! It's not valid url. Please Try Again.")
 
     elif role == 'exit':
         print("Bye Darling! See you soon!")
